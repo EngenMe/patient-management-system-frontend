@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button';
+import Logo from '@/components/Logo';
 
 export default function Home() {
     return (
         <div className="p-40">
-            <Button>Hello World!</Button>
+            <Logo />
         </div>
     );
 }
