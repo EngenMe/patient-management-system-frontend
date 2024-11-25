@@ -1,9 +1,9 @@
-import Header1 from '@/components/Header1';
+import Paragraph1 from '@/components/Paragraph1';
 
 export default function Home() {
     return (
         <div className="p-40 w-1/2">
-            <Header1>Hi there, ....</Header1>
+            <Paragraph1>Get started with appointments.</Paragraph1>
         </div>
     );
 }
