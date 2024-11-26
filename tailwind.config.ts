@@ -9,6 +9,9 @@ export default {
     ],
     theme: {
         extend: {
+            ringColor: {
+                gradient: 'transparent',
+            },
             colors: {
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
