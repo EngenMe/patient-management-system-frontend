@@ -2,11 +2,15 @@ import { Button } from './ui/button';
 
 interface Props {
     children: string;
+    type?: 'submit' | 'reset' | 'button' | undefined;
 }
 
-const PrimaryButton = ({ children }: Props) => {
+const PrimaryButton = ({ children, type = 'button' }: Props) => {
     return (
-        <Button className="w-full h-12 rounded-[8px] py-2 px-6 gap-3 font-semibold text-base text-foreground">
+        <Button
+            type={type}
+            className="w-full h-12 rounded-[8px] py-2 px-6 gap-3 font-semibold text-base text-foreground"
+        >
             {children}
         </Button>
     );
