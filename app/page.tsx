@@ -1,9 +1,11 @@
-import PrimaryButton from '@/components/PrimaryButton';
+import Footer from '@/components/Footer';
 
 export default function Home() {
     return (
         <div className="p-40 w-1/2">
-            <PrimaryButton>Get Started</PrimaryButton>
+            <Footer href="https://engenme.github.io/" isPulse={true}>
+                Made by EngenMe
+            </Footer>
         </div>
     );
 }
