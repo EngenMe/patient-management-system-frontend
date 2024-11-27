@@ -1,29 +1,41 @@
 'use client';
 
 import { z } from 'zod';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PrimaryButton from './PrimaryButton';
 import { Mail, Phone, UserRound } from 'lucide-react';
 import { Input } from './InputField';
+import { submitForm } from '@/utils/submitForm';
+import { useRouter } from 'next/navigation';
+import { MainPageFormData } from '@/interfaces/MainPageFormData.interface';
 
 const formSchema = z.object({
-    fullName: z.string().min(1, 'Full name is required'),
-    email: z.string().email('Invalid email address'),
-    phone: z.string().regex(/^\d+$/, 'Phone must only contain numbers'),
+    fullName: z
+        .string()
+        .min(3, 'Full name must be at least 3 characters long')
+        .max(50, 'Full name must be less than 50 characters long'),
+    email: z.string().email('Invalid email address').max(100, 'Email must be less than 100 characters long'),
+    phone: z
+        .string()
+        .regex(/^\d+$/, 'Phone must only contain numbers')
+        .min(7, 'Phone number must be at least 7 digits long')
+        .max(15, 'Phone number must be less than 15 digits long'),
 });
 
 const MainPageForm = () => {
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({
+    } = useForm<MainPageFormData>({
         resolver: zodResolver(formSchema),
     });
 
-    const onSubmit = (data: unknown) => {
-        console.log('Form Submitted:', data);
+    const onSubmit: SubmitHandler<MainPageFormData> = async (data: MainPageFormData) => {
+        await submitForm(data, router);
     };
 
     return (
