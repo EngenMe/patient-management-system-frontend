@@ -2,13 +2,13 @@ import { MainPageFormData } from '@/interfaces/MainPageFormData.interface';
 import { create } from 'zustand';
 
 interface PatientStore {
-    patientData: MainPageFormData | null;
+    patientData: MainPageFormData | { fullName: ''; email: ''; phone: '' };
     setPatientData: (data: MainPageFormData) => void;
     clearPatientData: () => void;
 }
 
 export const usePatientStore = create<PatientStore>((set) => ({
-    patientData: null,
+    patientData: { fullName: '', email: '', phone: '' },
     setPatientData: (data) => set({ patientData: data }),
-    clearPatientData: () => set({ patientData: null }),
+    clearPatientData: () => set({ patientData: { fullName: '', email: '', phone: '' } }),
 }));
