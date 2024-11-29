@@ -8,6 +8,8 @@ import { Mail, Phone, UserRound } from 'lucide-react';
 import Header2 from './Header2';
 import { useState } from 'react';
 import DatePickerInput from './DatePickerInput';
+import { subYears } from 'date-fns';
+import ComboGroup from './ComboGroup';
 
 const NewPatientPageForm = () => {
     const patientData = usePatientStore((state) => state.patientData);
@@ -78,8 +80,14 @@ const NewPatientPageForm = () => {
                         )}
                     </div>
                     {/* Date Picker */}
-                    <DatePickerInput selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-                    <div>radiobutton for gender Male/ Female</div>
+                    <DatePickerInput
+                        selectedDate={selectedDate}
+                        setSelectedDate={setSelectedDate}
+                        minDate={subYears(new Date(), 100)}
+                        maxDate={new Date()}
+                    />
+                    {/* Gender Selection */}
+                    <ComboGroup register={register} errors={errors} />
                 </div>
             </form>
         </section>

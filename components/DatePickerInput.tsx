@@ -4,16 +4,18 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Calendar as DatePickerCalendar } from './ui/calendar';
 import { Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format, subYears } from 'date-fns';
+import { format } from 'date-fns';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from './ui/select';
 
 interface Props {
     selectedDate: Date | undefined;
     setSelectedDate: Dispatch<SetStateAction<Date | undefined>>;
+    minDate: Date;
+    maxDate: Date;
 }
 
-const DatePickerInput = ({ selectedDate, setSelectedDate }: Props) => {
+const DatePickerInput = ({ selectedDate, setSelectedDate, minDate, maxDate }: Props) => {
     const [month, setMonth] = useState<number>(selectedDate ? selectedDate.getMonth() : new Date().getMonth());
     const [year, setYear] = useState<number>(selectedDate ? selectedDate.getFullYear() : new Date().getFullYear());
 
@@ -35,9 +37,6 @@ const DatePickerInput = ({ selectedDate, setSelectedDate }: Props) => {
     const years = Array.from({ length: 101 }, (_, i) => new Date().getFullYear() - i);
 
     const displayedMonth = new Date(year, month);
-
-    const minDate = subYears(new Date(), 100);
-    const maxDate = new Date();
 
     return (
         <div className="flex flex-col gap-4">
