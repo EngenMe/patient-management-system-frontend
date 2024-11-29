@@ -4,7 +4,7 @@ import { usePatientStore } from '@/store/patientStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Input } from './InputField';
-import { Mail, Phone, UserRound } from 'lucide-react';
+import { BriefcaseBusiness, Mail, MapPin, Phone, UserRound } from 'lucide-react';
 import Header2 from './Header2';
 import { useState } from 'react';
 import DatePickerInput from './DatePickerInput';
@@ -32,7 +32,9 @@ const NewPatientPageForm = () => {
     return (
         <section>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-[84px]">
-                <Header2>Personal Information</Header2>
+                <div className="pb-4">
+                    <Header2>Personal Information</Header2>
+                </div>
                 {/* Full Name */}
                 <div>
                     <Input
@@ -85,9 +87,70 @@ const NewPatientPageForm = () => {
                         setSelectedDate={setSelectedDate}
                         minDate={subYears(new Date(), 100)}
                         maxDate={new Date()}
+                        errors={errors}
+                        placeholder="Select your birthdate"
                     />
                     {/* Gender Selection */}
                     <ComboGroup register={register} errors={errors} />
+                    {/* Address */}
+                    <div>
+                        <Input
+                            id="address"
+                            type="text"
+                            placeholder="1234 Elm Street"
+                            icon={MapPin}
+                            label="Address"
+                            {...register('address')}
+                        />
+                        {errors.address?.message && (
+                            <p className="text-destructive text-sm mt-1">{String(errors.address.message)}</p>
+                        )}
+                    </div>
+                    {/* Occupation */}
+                    <div>
+                        <Input
+                            id="occupation"
+                            type="text"
+                            placeholder="Software Engineer"
+                            icon={BriefcaseBusiness}
+                            label="Occupation"
+                            {...register('occupation')}
+                        />
+                        {errors.address?.message && (
+                            <p className="text-destructive text-sm mt-1">{String(errors.address.message)}</p>
+                        )}
+                    </div>
+                    {/* Emergency contact name */}
+                    <div>
+                        <Input
+                            id="emergencyContactName"
+                            type="text"
+                            placeholder="Jane Smith"
+                            icon={UserRound}
+                            label="Emergency Contact Name"
+                            {...register('emergencyContactName')}
+                        />
+                        {errors.fullName?.message && (
+                            <p className="text-destructive text-sm mt-1">{String(errors.fullName.message)}</p>
+                        )}
+                    </div>
+                    {/* Emergency contact number */}
+                    <div>
+                        <Input
+                            id="emergencyContactPhone"
+                            type="Phone number"
+                            placeholder="089 765 4321"
+                            icon={Phone}
+                            label="Emergency Contact Phone"
+                            {...register('emergencyContactPhone')}
+                        />
+                        {errors.phone?.message && (
+                            <p className="text-destructive text-sm mt-1">{String(errors.phone.message)}</p>
+                        )}
+                    </div>
+                </div>
+                <div className="pt-5 pb-4">
+                    <Header2>Medical Information</Header2>
                 </div>
             </form>
         </section>
