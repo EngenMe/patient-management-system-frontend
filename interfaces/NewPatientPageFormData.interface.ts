@@ -8,6 +8,7 @@ export interface NewPatientPageFormData {
     occupation: string;
     emergencyContactName: string;
     emergencyContactPhone: string;
+    primaryCarePhysicianName: string;
     medicalCardNumber?: string;
     ppsNumber?: string;
     gpName?: string;

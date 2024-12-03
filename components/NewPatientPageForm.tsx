@@ -4,18 +4,52 @@ import { usePatientStore } from '@/store/patientStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Input } from './InputField';
-import { BriefcaseBusiness, Mail, MapPin, Phone, UserRound } from 'lucide-react';
+import { BriefcaseBusiness, Mail, MapPin, Phone, Stethoscope, UserRound } from 'lucide-react';
 import Header2 from './Header2';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePickerInput from './DatePickerInput';
 import { subYears } from 'date-fns';
-import ComboGroup from './ComboGroup';
+import ComboGroup from './RadioGroup';
+import ComboBox from './ComboBox';
+import { ComboBoxItem } from '@/interfaces/ComboBoxItem.interface';
+import { Doctor } from '@/interfaces/Doctor.interface';
 
 const NewPatientPageForm = () => {
     const patientData = usePatientStore((state) => state.patientData);
     const { fullName, email, phone } = patientData;
 
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+    const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
+    const [doctors, setDoctors] = useState<ComboBoxItem[]>([]);
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/doctors');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                const doctorsArray: Doctor[] = data['data'];
+
+                const transformedDoctors = doctorsArray.map((doctor) => ({
+                    value: doctor.name
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s]/g, '')
+                        .replace(/\s+/g, '-'),
+                    label: doctor.name,
+                    picturePath: `/doctors/${doctor.picturePath}`,
+                }));
+
+                setDoctors(transformedDoctors);
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+            }
+        };
+
+        fetchDoctors();
+    }, []);
 
     const {
         register,
@@ -151,6 +185,22 @@ const NewPatientPageForm = () => {
                 </div>
                 <div className="pt-5 pb-4">
                     <Header2>Medical Information</Header2>
+                </div>
+                {/* Primary care physician */}
+                <div>
+                    <ComboBox
+                        selectedItem={selectedDoctor}
+                        setSelectedItem={setSelectedDoctor}
+                        icon={Stethoscope}
+                        placeholder="Select physician"
+                        searchPlaceholder="Search physician"
+                        items={doctors}
+                    />
+                    {errors.primaryCarePhysicianName?.message && (
+                        <p className="text-destructive text-sm mt-1">
+                            {String(errors.primaryCarePhysicianName?.message)}
+                        </p>
+                    )}
                 </div>
             </form>
         </section>

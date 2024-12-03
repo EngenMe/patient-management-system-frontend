@@ -52,10 +52,10 @@ const DatePickerInput = ({ selectedDate, setSelectedDate, minDate, maxDate, erro
                             variant="outline"
                             className={cn(
                                 selectedDate ? 'text-foreground' : 'text-accent-foreground',
-                                'flex h-12 w-full rounded-[8px] border border-border bg-input px-3 text-base justify-start'
+                                'flex h-12 w-full rounded-[8px] border border-border bg-input px-4 text-base justify-start'
                             )}
                         >
-                            <Calendar size={18} className="mr-2" />
+                            <Calendar size={18} className="mr-1" />
                             {selectedDate ? format(selectedDate, 'MM/dd/yyyy') : placeholder}
                         </Button>
                     </PopoverTrigger>

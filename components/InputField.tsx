@@ -16,7 +16,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ className, type, icon:
             </Label>
             <div className="relative flex flex-col items-center justify-center w-full" id={id}>
                 {Icon && (
-                    <div className="absolute left-3">
+                    <div className="absolute left-4">
                         <Icon size={18} className="text-accent-foreground" />
                     </div>
                 )}
@@ -24,7 +24,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ className, type, icon:
                     type={type}
                     className={cn(
                         'flex h-12 w-full rounded-[8px] border border-border bg-input px-4 text-base text-foreground placeholder:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-                        Icon ? 'pl-10' : '',
+                        Icon ? 'pl-11' : '',
                         className
                     )}
                     ref={ref}
