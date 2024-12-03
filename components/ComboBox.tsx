@@ -31,13 +31,15 @@ const ComboBox = ({ selectedItem, setSelectedItem, icon: Icon, placeholder, sear
                         <div>
                             {selectedItem ? (
                                 <div className="flex items-center w-auto h-8 rounded-[5px] border p-3 gap-[6px] font-semibold text-xs leading-[18px] text-foreground bg-gradient-to-r from-[#D7EDED29] to-[#CCEBEB00]">
-                                    <Avatar className="w-6 h-6">
-                                        <AvatarImage
-                                            src={items.find((item) => item.value === selectedItem)?.picturePath}
-                                            alt={items.find((item) => item.value === selectedItem)?.value}
-                                        />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
+                                    {items.find((item) => item.value === selectedItem)?.picturePath && (
+                                        <Avatar className="w-6 h-6">
+                                            <AvatarImage
+                                                src={items.find((item) => item.value === selectedItem)?.picturePath}
+                                                alt={items.find((item) => item.value === selectedItem)?.value}
+                                            />
+                                            <AvatarFallback>CN</AvatarFallback>
+                                        </Avatar>
+                                    )}
 
                                     {items.find((item) => item.value === selectedItem)?.label}
                                 </div>
@@ -55,7 +57,7 @@ const ComboBox = ({ selectedItem, setSelectedItem, icon: Icon, placeholder, sear
                     <Command className="bg-input">
                         <CommandInput placeholder={searchPlaceholder} />
                         <CommandList>
-                            <CommandEmpty>No physician found.</CommandEmpty>
+                            <CommandEmpty>Empty</CommandEmpty>
                             <CommandGroup>
                                 {items.map((item) => (
                                     <CommandItem
@@ -70,10 +72,12 @@ const ComboBox = ({ selectedItem, setSelectedItem, icon: Icon, placeholder, sear
                                             'font-semibold text-base gap-4 my-2 rounded-xl'
                                         )}
                                     >
-                                        <Avatar className="w-8 h-8">
-                                            <AvatarImage src={item.picturePath} alt={item.label} />
-                                            <AvatarFallback>Dr</AvatarFallback>
-                                        </Avatar>
+                                        {item.picturePath && (
+                                            <Avatar className="w-8 h-8">
+                                                <AvatarImage src={item.picturePath} alt={item.label} />
+                                                <AvatarFallback></AvatarFallback>
+                                            </Avatar>
+                                        )}
                                         {item.label}
                                         <Check
                                             className={cn(
