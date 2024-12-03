@@ -16,6 +16,8 @@ import { fetchDoctors } from '@/utils/fetchDoctors';
 import { Textarea } from './MultilineInputField';
 import { fetchIdTypes } from '@/utils/fetchIdTypes';
 import UploadDocument from './UploadDocument';
+import { Checkbox } from './ui/checkbox';
+import { Button } from './ui/button';
 
 const NewPatientPageForm = () => {
     const patientData = usePatientStore((state) => state.patientData);
@@ -37,6 +39,7 @@ const NewPatientPageForm = () => {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<NewPatientPageFormData>({
         resolver: zodResolver(newPatientPageFormSchema),
@@ -108,7 +111,12 @@ const NewPatientPageForm = () => {
                         placeholder="Select your birthdate"
                     />
                     {/* Gender Selection */}
-                    <ComboGroup register={register} errors={errors} />
+                    <div>
+                        <ComboGroup register={register} />
+                        {errors.gender?.message && (
+                            <p className="text-destructive text-sm mt-1">{String(errors.gender.message)}</p>
+                        )}
+                    </div>
                     {/* Address */}
                     <div>
                         <Input
@@ -172,18 +180,19 @@ const NewPatientPageForm = () => {
                 {/* Primary care physician */}
                 <div>
                     <ComboBox
+                        label="Primary Care Physician"
                         selectedItem={selectedDoctor}
-                        setSelectedItem={setSelectedDoctor}
+                        setSelectedItem={(value) => {
+                            setSelectedDoctor(value);
+                            setValue('primaryCarePhysician', value as string);
+                        }}
                         icon={Stethoscope}
                         placeholder="Select physician"
                         searchPlaceholder="Search physician"
                         items={doctors}
-                        {...register('primaryCarePhysicianName')}
                     />
-                    {errors.primaryCarePhysicianName?.message && (
-                        <p className="text-destructive text-sm mt-1">
-                            {String(errors.primaryCarePhysicianName.message)}
-                        </p>
+                    {errors.primaryCarePhysician?.message && (
+                        <p className="text-destructive text-sm mt-1">{String(errors.primaryCarePhysician.message)}</p>
                     )}
                 </div>
                 <div className="grid grid-cols-2 gap-6">
@@ -197,9 +206,6 @@ const NewPatientPageForm = () => {
                             label="Medical Card Number"
                             {...register('medicalCardNumber')}
                         />
-                        {errors.medicalCardNumber?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.medicalCardNumber.message)}</p>
-                        )}
                     </div>
                     {/* PPS Number */}
                     <div>
@@ -211,9 +217,6 @@ const NewPatientPageForm = () => {
                             label="PPS Number"
                             {...register('ppsNumber')}
                         />
-                        {errors.ppsNumber?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.ppsNumber.message)}</p>
-                        )}
                     </div>
                     {/* GP Name */}
                     <div>
@@ -225,9 +228,6 @@ const NewPatientPageForm = () => {
                             label="GP Name"
                             {...register('gpName')}
                         />
-                        {errors.gpName?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.gpName.message)}</p>
-                        )}
                     </div>
                 </div>
                 <div className="grid grid-cols-2 gap-6">
@@ -274,8 +274,12 @@ const NewPatientPageForm = () => {
                 {/* Id Type */}
                 <div>
                     <ComboBox
+                        label="Id Type"
                         selectedItem={selectedIdType}
-                        setSelectedItem={setSelectedIdType}
+                        setSelectedItem={(value) => {
+                            setSelectedIdType(value);
+                            setValue('identificationType', value as string);
+                        }}
                         icon={IdCard}
                         placeholder="Select Id Type"
                         searchPlaceholder="Search type"
@@ -301,12 +305,69 @@ const NewPatientPageForm = () => {
                     )}
                 </div>
                 {/* Scanned Copy of Identification Document */}
-                <UploadDocument register={register} />
+                <div>
+                    <UploadDocument setValue={setValue} />
+                    {errors.imageDocument?.message && (
+                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
+                    )}
+                </div>
                 <div className="pt-5 pb-4">
                     <Header2>Consent and Privacy</Header2>
+                </div>
+                {/* Consent and Privacy */}
+                <div>
+                    <div className="flex items-center gap-[14px]">
+                        <Checkbox id="terms" className="w-6 h-6 bg-input border border-border rounded-[4px]" />
+                        <label
+                            {...register('consentToTreatment')}
+                            htmlFor="terms"
+                            className="text-lg text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            I consent to receive treatment for my health condition.
+                        </label>
+                    </div>
+                    {errors.imageDocument?.message && (
+                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
+                    )}
+                </div>
+                <div>
+                    <div className="flex items-center gap-[14px]">
+                        <Checkbox id="terms" className="w-6 h-6 bg-input border border-border rounded-[4px]" />
+                        <label
+                            {...register('consentToHealthInfoDisclosure')}
+                            htmlFor="terms"
+                            className="text-lg text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            I consent to the use and disclosure of my health information for treatment purposes.
+                        </label>
+                    </div>
+                    {errors.imageDocument?.message && (
+                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
+                    )}
+                </div>
+                <div>
+                    <div className="flex items-center gap-[14px]">
+                        <Checkbox id="terms" className="w-6 h-6 bg-input border border-border rounded-[4px]" />
+                        <label
+                            {...register('agreeToPrivacyPolicy')}
+                            htmlFor="terms"
+                            className="text-lg text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            I acknowledge that I have reviewed and agree to the privacy policy
+                        </label>
+                    </div>
+                    {errors.imageDocument?.message && (
+                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
+                    )}
+                </div>
+                {/* Submit Button */}
+                <div className="pt-9">
+                    <Button type="submit" className="w-full h-12 rounded-[8px] font-semibold text-base text-foreground">
+                        Submit and Continue
+                    </Button>
                 </div>
             </form>
         </section>
     );
 };
-export default NewPatientPageForm;
+export default NewPatientPageForm; //TODO: Refactor the code more

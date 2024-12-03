@@ -1,12 +1,11 @@
 import { NewPatientPageFormData } from '@/interfaces/NewPatientPageFormData.interface';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 
 interface Props {
     register: UseFormRegister<NewPatientPageFormData>;
-    errors: FieldErrors<NewPatientPageFormData>;
 }
 
-const ComboGroup = ({ register, errors }: Props) => {
+const ComboGroup = ({ register }: Props) => {
     return (
         <div className="flex flex-col gap-4">
             <label className="font-medium text-sm text-muted-foreground">Gender</label>
@@ -20,7 +19,6 @@ const ComboGroup = ({ register, errors }: Props) => {
                     <span className="font-medium text-base text-[#cdcecf]">Female</span>
                 </label>
             </div>
-            {errors.gender?.message && <p className="text-destructive text-sm mt-1">{String(errors.gender.message)}</p>}
         </div>
     );
 };

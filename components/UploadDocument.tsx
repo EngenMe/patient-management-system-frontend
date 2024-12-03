@@ -1,19 +1,23 @@
 import { NewPatientPageFormData } from '@/interfaces/NewPatientPageFormData.interface';
 import { CloudUpload } from 'lucide-react';
 import { useState } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormSetValue } from 'react-hook-form';
 
 interface Props {
-    register: UseFormRegister<NewPatientPageFormData>;
+    setValue: UseFormSetValue<NewPatientPageFormData>;
 }
 
-const UploadDocument = ({ register }: Props) => {
+const UploadDocument = ({ setValue }: Props) => {
     const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             setUploadedFileName(file.name);
+            setValue('imageDocument', file.name);
+        } else {
+            setUploadedFileName(null);
+            setValue('imageDocument', '');
         }
     };
 
@@ -45,7 +49,6 @@ const UploadDocument = ({ register }: Props) => {
                     </>
                 )}
                 <input
-                    {...register('imageDocument')}
                     type="file"
                     id="uploadDocument"
                     accept=".svg,.png,.jpg,.jpeg,.gif"

@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { ComboBoxItem } from '@/interfaces/ComboBoxItem.interface';
 
 interface Props {
+    label: string;
     selectedItem: string | null;
     setSelectedItem: Dispatch<SetStateAction<string | null>>;
     icon: LucideIcon;
@@ -16,10 +17,18 @@ interface Props {
     items: ComboBoxItem[];
 }
 
-const ComboBox = ({ selectedItem, setSelectedItem, icon: Icon, placeholder, searchPlaceholder, items }: Props) => {
+const ComboBox = ({
+    label,
+    selectedItem,
+    setSelectedItem,
+    icon: Icon,
+    placeholder,
+    searchPlaceholder,
+    items,
+}: Props) => {
     return (
         <div className="flex flex-col gap-4">
-            <label className="font-medium text-sm text-muted-foreground">Primary Care Physician</label>
+            <label className="font-medium text-sm text-muted-foreground">{label}</label>
             <Popover>
                 <PopoverTrigger asChild>
                     <Button

@@ -8,7 +8,7 @@ export interface NewPatientPageFormData {
     occupation: string;
     emergencyContactName: string;
     emergencyContactPhone: string;
-    primaryCarePhysicianName: string;
+    primaryCarePhysician: string;
     medicalCardNumber?: string;
     ppsNumber?: string;
     gpName?: string;
@@ -18,7 +18,7 @@ export interface NewPatientPageFormData {
     pastMedicalHistory?: string;
     identificationType: string;
     identificationNumber: string;
-    imageDocument?: File;
+    imageDocument?: string;
     consentToTreatment: boolean;
     consentToHealthInfoDisclosure: boolean;
     agreeToPrivacyPolicy: boolean;

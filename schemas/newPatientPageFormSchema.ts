@@ -56,16 +56,7 @@ export const newPatientPageFormSchema = z.object({
         .string()
         .min(3, 'Identification number must be at least 3 characters long')
         .max(50, 'Identification number must be less than 50 characters long'),
-    imageDocument: z
-        .any()
-        .refine(
-            (file) => file instanceof File && file.size <= 5 * 1024 * 1024,
-            'File must be an image and less than 5MB'
-        )
-        .refine(
-            (file) => file instanceof File && ['image/jpeg', 'image/png', 'image/gif'].includes(file.type),
-            'File must be a valid image (JPEG, PNG, GIF)'
-        ),
+    imageDocument: z.string().min(1, 'Please upload a scanned copy of your identification document'),
     consentToTreatment: z
         .boolean()
         .refine((value) => value === true, 'You must consent to receive treatment for your health condition.'),
