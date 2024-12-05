@@ -1,373 +1,254 @@
-import { NewPatientPageFormData } from '@/interfaces/NewPatientPageFormData.interface';
-import { newPatientPageFormSchema } from '@/schemas/newPatientPageFormSchema';
-import { usePatientStore } from '@/store/patientStore';
+'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Input } from './InputField';
-import { BriefcaseBusiness, IdCard, Mail, MapPin, Phone, Stethoscope, UserRound } from 'lucide-react';
-import Header2 from './Header2';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Form } from '@/components/ui/form';
+import { toast } from '@/hooks/use-toast';
+import Header2 from './MainPage/Header2';
+import TextInput from './NewPatient/TextInput';
+import { BriefcaseBusiness, IdCard, Mail, MapPin, Phone, UserRound } from 'lucide-react';
+import { newPatientFormSchema } from '@/schemas/newPatientFormSchema';
+import DatePicker from './NewPatient/DatePicker';
+import RadioGroupField from './NewPatient/RadioGroupField';
+import { genderItems } from '@/public/genderItems';
+import ComboBox from './NewPatient/ComboBox';
 import { useEffect, useState } from 'react';
-import DatePickerInput from './DatePickerInput';
-import { subYears } from 'date-fns';
-import ComboGroup from './RadioGroup';
-import ComboBox from './ComboBox';
-import { ComboBoxItem } from '@/interfaces/ComboBoxItem.interface';
 import { fetchDoctors } from '@/utils/fetchDoctors';
-import { Textarea } from './MultilineInputField';
+import { transformDoctorsToComboBoxItems } from '@/utils/transformDoctorsToComboBoxItems';
+import { Doctor } from '@/interfaces/Doctor.interface';
+import MultiLineTextInput from './NewPatient/MultiLineTextInput';
 import { fetchIdTypes } from '@/utils/fetchIdTypes';
-import UploadDocument from './UploadDocument';
-import { Checkbox } from './ui/checkbox';
-import { Button } from './ui/button';
+import { IdType } from '@/interfaces/IdType.interface';
+import { transformIdTypesToComboBoxItems } from '@/utils/transformIdTypesToComboBoxItems';
+import UploadDocument from './NewPatient/UploadDocument';
+import PrimaryButton from './MainPage/PrimaryButton';
+import { NewPatient } from '@/interfaces/NewPatient.interface';
+import CheckBox from './NewPatient/CheckBox';
 
 const NewPatientPageForm = () => {
-    const patientData = usePatientStore((state) => state.patientData);
-    const { fullName, email, phone } = patientData;
+    const form = useForm<z.infer<typeof newPatientFormSchema>>({
+        resolver: zodResolver(newPatientFormSchema),
+        defaultValues: {
+            fullName: undefined,
+            email: undefined,
+            phone: undefined,
+            dateOfBirth: new Date(),
+            gender: undefined,
+            address: undefined,
+            occupation: undefined,
+            emergencyContactName: undefined,
+            emergencyContactPhone: undefined,
+            primaryCarePhysician: undefined,
+            medicalCardNumber: undefined,
+            ppsNumber: undefined,
+            allergies: undefined,
+            currentMedications: undefined,
+            familyMedicalHistory: undefined,
+            pastMedicalHistory: undefined,
+            identificationType: undefined,
+            identificationNumber: undefined,
+            imageDocument: undefined,
+            consentToTreatment: undefined,
+            consentToDisclosure: undefined,
+            agreeToPrivacyPolicy: undefined,
+        },
+    });
 
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-
-    const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
-    const [doctors, setDoctors] = useState<ComboBoxItem[]>([]);
-
-    const [selectedIdType, setSelectedIdType] = useState<string | null>(null);
-    const [idTypes, setIdTypes] = useState<ComboBoxItem[]>([]);
+    const [doctors, setDoctors] = useState<Doctor[]>([]);
+    const [idTypes, setIdTypes] = useState<IdType[]>([]);
 
     useEffect(() => {
         fetchDoctors(setDoctors);
         fetchIdTypes(setIdTypes);
     }, []);
 
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        formState: { errors },
-    } = useForm<NewPatientPageFormData>({
-        resolver: zodResolver(newPatientPageFormSchema),
-    });
-
-    const onSubmit: SubmitHandler<NewPatientPageFormData> = (data: NewPatientPageFormData) => {
-        console.log({ ...data, dateOfBirth: selectedDate });
-    };
+    function onSubmit(data: z.infer<typeof newPatientFormSchema>) {
+        toast({
+            title: 'You submitted the following values:',
+            description: (
+                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+                </pre>
+            ),
+        });
+    }
 
     return (
-        <section>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-[84px]">
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-[84px]">
                 <div className="pb-4">
                     <Header2>Personal Information</Header2>
                 </div>
                 {/* Full Name */}
-                <div>
-                    <Input
-                        id="fullName"
-                        type="text"
-                        placeholder="John Doe"
-                        icon={UserRound}
-                        label="Full name"
-                        defaultValue={fullName}
-                        {...register('fullName')}
-                    />
-                    {errors.fullName?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.fullName.message)}</p>
-                    )}
-                </div>
+                <TextInput<NewPatient>
+                    control={form.control}
+                    name="fullName"
+                    label="Full name"
+                    placeholder="John Doe"
+                    icon={UserRound}
+                />
                 <div className="grid grid-cols-2 gap-6">
                     {/* Email */}
-                    <div>
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="john_doe@gmail.com"
-                            icon={Mail}
-                            label="Email address"
-                            defaultValue={email}
-                            {...register('email')}
-                        />
-                        {errors.email?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.email.message)}</p>
-                        )}
-                    </div>
-                    {/* Phone */}
-                    <div>
-                        <Input
-                            id="phone"
-                            type="Phone number"
-                            placeholder="089 765 4321"
-                            icon={Phone}
-                            label="Phone number"
-                            defaultValue={phone}
-                            {...register('phone')}
-                        />
-                        {errors.phone?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.phone.message)}</p>
-                        )}
-                    </div>
-                    {/* Date Picker */}
-                    <DatePickerInput
-                        selectedDate={selectedDate}
-                        setSelectedDate={setSelectedDate}
-                        minDate={subYears(new Date(), 100)}
-                        maxDate={new Date()}
-                        errors={errors}
-                        placeholder="Select your birthdate"
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="email"
+                        label="Email address"
+                        placeholder="john_doe@gmail.com"
+                        icon={Mail}
+                        type="email"
                     />
-                    {/* Gender Selection */}
-                    <div>
-                        <ComboGroup register={register} />
-                        {errors.gender?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.gender.message)}</p>
-                        )}
-                    </div>
+                    {/* Phone */}
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="phone"
+                        label="Phone number"
+                        placeholder="089 765 4321"
+                        icon={Phone}
+                        type="tel"
+                    />
+                    {/* Date of Birth */}
+                    <DatePicker control={form.control} name="dateOfBirth" label="Date of Birth" />
+                    {/* Gender */}
+                    <RadioGroupField control={form.control} name="gender" label="Gender" radioItems={genderItems} />
                     {/* Address */}
-                    <div>
-                        <Input
-                            id="address"
-                            type="text"
-                            placeholder="1234 Elm Street"
-                            icon={MapPin}
-                            label="Address"
-                            {...register('address')}
-                        />
-                        {errors.address?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.address.message)}</p>
-                        )}
-                    </div>
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="address"
+                        label="Address"
+                        placeholder="1234 Elm Street"
+                        icon={MapPin}
+                    />
                     {/* Occupation */}
-                    <div>
-                        <Input
-                            id="occupation"
-                            type="text"
-                            placeholder="Software Engineer"
-                            icon={BriefcaseBusiness}
-                            label="Occupation"
-                            {...register('occupation')}
-                        />
-                        {errors.address?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.address.message)}</p>
-                        )}
-                    </div>
-                    {/* Emergency contact name */}
-                    <div>
-                        <Input
-                            id="emergencyContactName"
-                            type="text"
-                            placeholder="Jane Smith"
-                            icon={UserRound}
-                            label="Emergency Contact Name"
-                            {...register('emergencyContactName')}
-                        />
-                        {errors.fullName?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.fullName.message)}</p>
-                        )}
-                    </div>
-                    {/* Emergency contact number */}
-                    <div>
-                        <Input
-                            id="emergencyContactPhone"
-                            type="Phone number"
-                            placeholder="089 765 4321"
-                            icon={Phone}
-                            label="Emergency Contact Phone"
-                            {...register('emergencyContactPhone')}
-                        />
-                        {errors.phone?.message && (
-                            <p className="text-destructive text-sm mt-1">{String(errors.phone.message)}</p>
-                        )}
-                    </div>
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="occupation"
+                        label="Occupation"
+                        placeholder="Software Engineer"
+                        icon={BriefcaseBusiness}
+                    />
+                    {/* Emergency Contact Name */}
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="emergencyContactName"
+                        label="Emergency Contact Name"
+                        placeholder="John Doe"
+                        icon={UserRound}
+                    />
+                    {/* Emergency Contact Phone */}
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="emergencyContactPhone"
+                        label="Emergency Contact Phone"
+                        placeholder="089 765 4321"
+                        icon={Phone}
+                        type="tel"
+                    />
                 </div>
-                <div className="pt-5 pb-4">
+                <div className="pb-4 pt-12">
                     <Header2>Medical Information</Header2>
                 </div>
-                {/* Primary care physician */}
-                <div>
-                    <ComboBox
-                        label="Primary Care Physician"
-                        selectedItem={selectedDoctor}
-                        setSelectedItem={(value) => {
-                            setSelectedDoctor(value);
-                            setValue('primaryCarePhysician', value as string);
-                        }}
-                        icon={Stethoscope}
-                        placeholder="Select physician"
-                        searchPlaceholder="Search physician"
-                        items={doctors}
-                    />
-                    {errors.primaryCarePhysician?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.primaryCarePhysician.message)}</p>
-                    )}
-                </div>
+                {/* Primary Care Physician */}
+                <ComboBox
+                    form={form}
+                    name="primaryCarePhysician"
+                    label="Primary Care Physician"
+                    data={transformDoctorsToComboBoxItems(doctors)}
+                    placeholder="Select a doctor"
+                    searchPlaceholder="Search for doctor"
+                />
                 <div className="grid grid-cols-2 gap-6">
                     {/* Medical Card Number */}
-                    <div>
-                        <Input
-                            id="medicalCardNumber"
-                            type="text"
-                            placeholder="0123456 A"
-                            icon={IdCard}
-                            label="Medical Card Number"
-                            {...register('medicalCardNumber')}
-                        />
-                    </div>
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="medicalCardNumber"
+                        label="Medical card number"
+                        placeholder="1234567 A"
+                        icon={IdCard}
+                    />
                     {/* PPS Number */}
-                    <div>
-                        <Input
-                            id="ppsNumber"
-                            type="text"
-                            placeholder="0123456AA"
-                            icon={IdCard}
-                            label="PPS Number"
-                            {...register('ppsNumber')}
-                        />
-                    </div>
-                    {/* GP Name */}
-                    <div>
-                        <Input
-                            id="gpName"
-                            type="text"
-                            placeholder="Dr. Michael Bennett"
-                            icon={Stethoscope}
-                            label="GP Name"
-                            {...register('gpName')}
-                        />
-                    </div>
-                </div>
-                <div className="grid grid-cols-2 gap-6">
+                    <TextInput<NewPatient>
+                        control={form.control}
+                        name="ppsNumber"
+                        label="PPS number"
+                        placeholder="1234567AA"
+                        icon={IdCard}
+                    />
                     {/* Allergies */}
-                    <div>
-                        <Textarea
-                            label="Allergies"
-                            id="allergies"
-                            placeholder="Peanuts, Penicillin, Pollen"
-                            {...register('allergies')}
-                        />
-                    </div>
+                    <MultiLineTextInput
+                        control={form.control}
+                        name="allergies"
+                        label="Allergies (if any)"
+                        placeholder="Peanuts, Penicillin, Pollen"
+                    />
                     {/* Current Medications */}
-                    <div>
-                        <Textarea
-                            label="Current Medications"
-                            id="currentMedications"
-                            placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
-                            {...register('currentMedications')}
-                        />
-                    </div>
+                    <MultiLineTextInput
+                        control={form.control}
+                        name="currentMedications"
+                        label="Current medications"
+                        placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
+                    />
                     {/* Family Medical History */}
-                    <div>
-                        <Textarea
-                            label="Family Medical History"
-                            id="familyMedicalHistory"
-                            placeholder="Mother had breast cancer"
-                            {...register('familyMedicalHistory')}
-                        />
-                    </div>
+                    <MultiLineTextInput
+                        control={form.control}
+                        name="familyMedicalHistory"
+                        label="Family medical history (if relevant)"
+                        placeholder="Mother had breast cancer"
+                    />
                     {/* Past Medical History */}
-                    <div>
-                        <Textarea
-                            label="Past Medical History"
-                            id="pastMedicalHistory"
-                            placeholder="Asthma diagnosis in childhood"
-                            {...register('pastMedicalHistory')}
-                        />
-                    </div>
+                    <MultiLineTextInput
+                        control={form.control}
+                        name="pastMedicalHistory"
+                        label="Past medical history"
+                        placeholder="Asthma diagnosis in childhood"
+                    />
                 </div>
-                <div className="pt-5 pb-4">
+                <div className="pb-4 pt-12">
                     <Header2>Identification and Verfication</Header2>
                 </div>
                 {/* Id Type */}
-                <div>
-                    <ComboBox
-                        label="Id Type"
-                        selectedItem={selectedIdType}
-                        setSelectedItem={(value) => {
-                            setSelectedIdType(value);
-                            setValue('identificationType', value as string);
-                        }}
-                        icon={IdCard}
-                        placeholder="Select Id Type"
-                        searchPlaceholder="Search type"
-                        items={idTypes}
-                        {...register('identificationType')}
-                    />
-                    {errors.identificationType?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.identificationType.message)}</p>
-                    )}
-                </div>
-                {/* Id Number */}
-                <div>
-                    <Input
-                        id="idNumber"
-                        type="text"
-                        placeholder="123456789"
-                        icon={IdCard}
-                        label="Id Number"
-                        {...register('identificationNumber')}
-                    />
-                    {errors.identificationNumber?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.identificationNumber.message)}</p>
-                    )}
-                </div>
-                {/* Scanned Copy of Identification Document */}
-                <div>
-                    <UploadDocument setValue={setValue} />
-                    {errors.imageDocument?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
-                    )}
-                </div>
-                <div className="pt-5 pb-4">
+                <ComboBox
+                    form={form}
+                    name="identificationType"
+                    label="Identification type"
+                    data={transformIdTypesToComboBoxItems(idTypes)}
+                    placeholder="Select an identification type"
+                    searchPlaceholder="Search for id type"
+                />
+                {/* Identification number */}
+                <TextInput<NewPatient>
+                    control={form.control}
+                    name="identificationNumber"
+                    label="Identification number"
+                    placeholder="123456789"
+                    icon={IdCard}
+                />
+                {/* Image Document */}
+                <UploadDocument control={form.control} name="imageDocument" />
+                <div className="pb-4 pt-12">
                     <Header2>Consent and Privacy</Header2>
                 </div>
-                {/* Consent and Privacy */}
-                <div>
-                    <div className="flex items-center gap-[14px]">
-                        <Checkbox id="terms" className="w-6 h-6 bg-input border border-border rounded-[4px]" />
-                        <label
-                            {...register('consentToTreatment')}
-                            htmlFor="terms"
-                            className="text-lg text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                            I consent to receive treatment for my health condition.
-                        </label>
-                    </div>
-                    {errors.imageDocument?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
-                    )}
-                </div>
-                <div>
-                    <div className="flex items-center gap-[14px]">
-                        <Checkbox id="terms" className="w-6 h-6 bg-input border border-border rounded-[4px]" />
-                        <label
-                            {...register('consentToHealthInfoDisclosure')}
-                            htmlFor="terms"
-                            className="text-lg text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                            I consent to the use and disclosure of my health information for treatment purposes.
-                        </label>
-                    </div>
-                    {errors.imageDocument?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
-                    )}
-                </div>
-                <div>
-                    <div className="flex items-center gap-[14px]">
-                        <Checkbox id="terms" className="w-6 h-6 bg-input border border-border rounded-[4px]" />
-                        <label
-                            {...register('agreeToPrivacyPolicy')}
-                            htmlFor="terms"
-                            className="text-lg text-muted-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                            I acknowledge that I have reviewed and agree to the privacy policy
-                        </label>
-                    </div>
-                    {errors.imageDocument?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.imageDocument.message)}</p>
-                    )}
-                </div>
-                {/* Submit Button */}
-                <div className="pt-9">
-                    <Button type="submit" className="w-full h-12 rounded-[8px] font-semibold text-base text-foreground">
-                        Submit and Continue
-                    </Button>
+                {/* Consent to receive treatment */}
+                <CheckBox
+                    control={form.control}
+                    name="consentToTreatment"
+                    label="I consent to receive treatment for my health condition."
+                />
+                <CheckBox
+                    control={form.control}
+                    name="consentToDisclosure"
+                    label="I consent to the use and disclosure of my health information for treatment purposes."
+                />
+                <CheckBox
+                    control={form.control}
+                    name="agreeToPrivacyPolicy"
+                    label="I acknowledge that I have reviewed and agree to the privacy policy"
+                />
+                <div className="py-12">
+                    <PrimaryButton type="submit"> Submit and Continue </PrimaryButton>
                 </div>
             </form>
-        </section>
+        </Form>
     );
 };
-export default NewPatientPageForm; //TODO: Refactor the code more
+export default NewPatientPageForm;

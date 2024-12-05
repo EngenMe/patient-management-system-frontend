@@ -1,8 +1,8 @@
-import Footer from '@/components/Footer';
-import Header1 from '@/components/Header1';
-import Logo from '@/components/Logo';
+import Footer from '@/components/MainPage/Footer';
+import Header1 from '@/components/MainPage/Header1';
+import Logo from '@/components/MainPage/Logo';
 import MainPageForm from '@/components/MainPageForm';
-import Paragraph1 from '@/components/Paragraph1';
+import Paragraph1 from '@/components/MainPage/Paragraph1';
 import Image from 'next/image';
 
 const HomePage = () => {

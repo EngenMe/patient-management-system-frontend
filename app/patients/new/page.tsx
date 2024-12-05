@@ -1,9 +1,9 @@
 'use client';
 
-import Header1 from '@/components/Header1';
-import Logo from '@/components/Logo';
+import Header1 from '@/components/MainPage/Header1';
+import Logo from '@/components/MainPage/Logo';
 import NewPatientPageForm from '@/components/NewPatientPageForm';
-import Paragraph2 from '@/components/Paragraph2';
+import Paragraph2 from '@/components/MainPage/Paragraph2';
 
 const NewPatientPage = () => {
     return (

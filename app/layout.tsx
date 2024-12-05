@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { Plus_Jakarta_Sans } from '@next/font/google';
+import { Toaster } from '@/components/ui/toaster';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     weight: ['400', '500', '600', '700'],
@@ -23,6 +24,7 @@ export default function RootLayout({
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
                     {children}
                 </ThemeProvider>
+                <Toaster />
             </body>
         </html>
     );

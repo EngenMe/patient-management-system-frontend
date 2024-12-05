@@ -2,76 +2,64 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import PrimaryButton from './PrimaryButton';
-import { Mail, Phone, UserRound } from 'lucide-react';
-import { Input } from './InputField';
+import PrimaryButton from './MainPage/PrimaryButton';
 import { submitForm } from '@/utils/submitMainPageForm';
 import { useRouter } from 'next/navigation';
 import { MainPageFormData } from '@/interfaces/MainPageFormData.interface';
+import TextInput from './NewPatient/TextInput';
+import { Form } from './ui/form';
+import { z } from 'zod';
 import { mainPageFormSchema } from '@/schemas/mainPageFormSchema';
+import { Mail, Phone, UserRound } from 'lucide-react';
 
 const MainPageForm = () => {
-    const router = useRouter();
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm<MainPageFormData>({
+    const form = useForm<z.infer<typeof mainPageFormSchema>>({
         resolver: zodResolver(mainPageFormSchema),
+        defaultValues: {
+            fullName: undefined,
+            email: undefined,
+            phone: undefined,
+        },
     });
+
+    const router = useRouter();
 
     const onSubmit: SubmitHandler<MainPageFormData> = async (data: MainPageFormData) => {
         await submitForm(data, router);
     };
 
     return (
-        <section>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-[84px] px-5 lg:px-0">
-                <div>
-                    <Input
-                        id="fullName"
-                        type="text"
-                        placeholder="John Doe"
-                        icon={UserRound}
-                        label="Full name"
-                        {...register('fullName')}
-                    />
-                    {errors.fullName?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.fullName.message)}</p>
-                    )}
-                </div>
-                <div>
-                    <Input
-                        id="email"
-                        type="email"
-                        placeholder="john_doe@gmail.com"
-                        icon={Mail}
-                        label="Email address"
-                        {...register('email')}
-                    />
-                    {errors.email?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.email.message)}</p>
-                    )}
-                </div>
-                <div>
-                    <Input
-                        id="phone"
-                        type="Phone number"
-                        placeholder="089 765 4321"
-                        icon={Phone}
-                        label="Phone number"
-                        {...register('phone')}
-                    />
-                    {errors.phone?.message && (
-                        <p className="text-destructive text-sm mt-1">{String(errors.phone.message)}</p>
-                    )}
-                </div>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-[84px]">
+                {/* Full name */}
+                <TextInput<MainPageFormData>
+                    control={form.control}
+                    name="fullName"
+                    label="Full name"
+                    placeholder="John Doe"
+                    icon={UserRound}
+                />
+                {/* Email address */}
+                <TextInput<MainPageFormData>
+                    control={form.control}
+                    name="email"
+                    label="Email address"
+                    placeholder="john_doe@gmail.com"
+                    icon={Mail}
+                />
+                {/* Phone number */}
+                <TextInput<MainPageFormData>
+                    control={form.control}
+                    name="phone"
+                    label="Phone number"
+                    placeholder="089 765 4321"
+                    icon={Phone}
+                />
                 <div className="pt-10">
                     <PrimaryButton type="submit">Get Started</PrimaryButton>
                 </div>
             </form>
-        </section>
+        </Form>
     );
 };
 export default MainPageForm;

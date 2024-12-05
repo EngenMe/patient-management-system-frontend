@@ -1,9 +1,9 @@
-export interface NewPatientPageFormData {
+export interface NewPatient {
     fullName: string;
     email: string;
     phone: string;
     dateOfBirth: Date;
-    gender: 'Male' | 'Female';
+    gender: 'male' | 'female';
     address: string;
     occupation: string;
     emergencyContactName: string;
@@ -11,15 +11,14 @@ export interface NewPatientPageFormData {
     primaryCarePhysician: string;
     medicalCardNumber?: string;
     ppsNumber?: string;
-    gpName?: string;
     allergies?: string;
     currentMedications?: string;
     familyMedicalHistory?: string;
     pastMedicalHistory?: string;
     identificationType: string;
     identificationNumber: string;
-    imageDocument?: string;
+    imageDocument: File;
     consentToTreatment: boolean;
-    consentToHealthInfoDisclosure: boolean;
+    consentToDisclosure: boolean;
     agreeToPrivacyPolicy: boolean;
 }
