@@ -6,7 +6,7 @@ export const submitForm = async (data: MainPageFormData, router: ReturnType<type
     const setPatientData = usePatientStore.getState().setPatientData;
 
     try {
-        const response = await fetch('http://localhost:4000/api/patient/validate', {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/patient/validate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

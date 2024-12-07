@@ -25,14 +25,19 @@ import UploadDocument from './NewPatient/UploadDocument';
 import PrimaryButton from './MainPage/PrimaryButton';
 import { NewPatient } from '@/interfaces/NewPatient.interface';
 import CheckBox from './NewPatient/CheckBox';
+import { usePatientStore } from '@/store/patientStore';
+// import { useRouter } from 'next/navigation';
+import { submitNewPatientForm } from '@/utils/submitNewPatientForm';
 
 const NewPatientPageForm = () => {
+    const { patientData } = usePatientStore();
+
     const form = useForm<z.infer<typeof newPatientFormSchema>>({
         resolver: zodResolver(newPatientFormSchema),
         defaultValues: {
-            fullName: undefined,
-            email: undefined,
-            phone: undefined,
+            fullName: patientData.fullName || undefined,
+            email: patientData.email || undefined,
+            phone: patientData.phone || undefined,
             dateOfBirth: new Date(),
             gender: undefined,
             address: undefined,
@@ -63,6 +68,8 @@ const NewPatientPageForm = () => {
         fetchIdTypes(setIdTypes);
     }, []);
 
+    // const router = useRouter();
+
     function onSubmit(data: z.infer<typeof newPatientFormSchema>) {
         toast({
             title: 'You submitted the following values:',
@@ -72,6 +79,8 @@ const NewPatientPageForm = () => {
                 </pre>
             ),
         });
+
+        submitNewPatientForm(data);
     }
 
     return (
@@ -234,11 +243,13 @@ const NewPatientPageForm = () => {
                     name="consentToTreatment"
                     label="I consent to receive treatment for my health condition."
                 />
+                {/* Consent to disclosure */}
                 <CheckBox
                     control={form.control}
                     name="consentToDisclosure"
                     label="I consent to the use and disclosure of my health information for treatment purposes."
                 />
+                {/* Agree to privacy policy */}
                 <CheckBox
                     control={form.control}
                     name="agreeToPrivacyPolicy"

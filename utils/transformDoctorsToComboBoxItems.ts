@@ -5,6 +5,6 @@ export function transformDoctorsToComboBoxItems(doctors: Doctor[]): ComboBoxItem
     return doctors.map((doctor) => ({
         value: doctor.name.replace(/[\s.]+/g, '-').toLowerCase(),
         label: doctor.name,
-        picturePath: `/doctorsPic/${doctor.picturePath}`,
+        picturePath: doctor.imageUrl,
     }));
 }
