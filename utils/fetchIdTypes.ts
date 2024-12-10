@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export const fetchIdTypes = async (setIdTypes: Dispatch<SetStateAction<IdType[]>>) => {
     try {
-        const response = await fetch('http://localhost:4000/api/id-types');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/id-types`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

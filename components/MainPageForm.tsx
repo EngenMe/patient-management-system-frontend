@@ -11,8 +11,14 @@ import { Form } from './ui/form';
 import { z } from 'zod';
 import { mainPageFormSchema } from '@/schemas/mainPageFormSchema';
 import { Mail, Phone, UserRound } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
 
-const MainPageForm = () => {
+interface Props {
+    setOtpVisibility: Dispatch<SetStateAction<boolean>>;
+    setPatientEmail: Dispatch<SetStateAction<string>>;
+}
+
+const MainPageForm = ({ setOtpVisibility, setPatientEmail }: Props) => {
     const form = useForm<z.infer<typeof mainPageFormSchema>>({
         resolver: zodResolver(mainPageFormSchema),
         defaultValues: {
@@ -25,7 +31,8 @@ const MainPageForm = () => {
     const router = useRouter();
 
     const onSubmit: SubmitHandler<MainPageFormData> = async (data: MainPageFormData) => {
-        await submitForm(data, router);
+        setPatientEmail(data.email);
+        await submitForm(data, router, setOtpVisibility);
     };
 
     return (

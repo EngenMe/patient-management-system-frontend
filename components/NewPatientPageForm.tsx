@@ -25,7 +25,7 @@ import UploadDocument from './NewPatient/UploadDocument';
 import PrimaryButton from './MainPage/PrimaryButton';
 import { NewPatient } from '@/interfaces/NewPatient.interface';
 import CheckBox from './NewPatient/CheckBox';
-import { usePatientStore } from '@/store/patientStore';
+import { usePatientStore } from '@/store/patient.store';
 // import { useRouter } from 'next/navigation';
 import { submitNewPatientForm } from '@/utils/submitNewPatientForm';
 
@@ -86,7 +86,7 @@ const NewPatientPageForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-[84px]">
-                <div className="pb-4">
+                <div className="pb-4 text-center lg:text-start">
                     <Header2>Personal Information</Header2>
                 </div>
                 {/* Full Name */}
@@ -97,7 +97,7 @@ const NewPatientPageForm = () => {
                     placeholder="John Doe"
                     icon={UserRound}
                 />
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid lg:grid-cols-2 gap-6">
                     {/* Email */}
                     <TextInput<NewPatient>
                         control={form.control}
@@ -154,7 +154,7 @@ const NewPatientPageForm = () => {
                         type="tel"
                     />
                 </div>
-                <div className="pb-4 pt-12">
+                <div className="pb-4 pt-12 text-center lg:text-start">
                     <Header2>Medical Information</Header2>
                 </div>
                 {/* Primary Care Physician */}
@@ -166,7 +166,7 @@ const NewPatientPageForm = () => {
                     placeholder="Select a doctor"
                     searchPlaceholder="Search for doctor"
                 />
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid lg:grid-cols-2 gap-6">
                     {/* Medical Card Number */}
                     <TextInput<NewPatient>
                         control={form.control}
@@ -212,7 +212,7 @@ const NewPatientPageForm = () => {
                         placeholder="Asthma diagnosis in childhood"
                     />
                 </div>
-                <div className="pb-4 pt-12">
+                <div className="pb-4 pt-12 text-center lg:text-start">
                     <Header2>Identification and Verfication</Header2>
                 </div>
                 {/* Id Type */}
@@ -234,7 +234,7 @@ const NewPatientPageForm = () => {
                 />
                 {/* Image Document */}
                 <UploadDocument control={form.control} name="imageDocument" />
-                <div className="pb-4 pt-12">
+                <div className="pb-4 pt-12 text-center lg:text-start">
                     <Header2>Consent and Privacy</Header2>
                 </div>
                 {/* Consent to receive treatment */}

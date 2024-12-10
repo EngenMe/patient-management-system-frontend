@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export const fetchDoctors = async (setDoctors: Dispatch<SetStateAction<Doctor[]>>) => {
     try {
-        const response = await fetch('http://localhost:4000/api/doctors');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/doctors`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

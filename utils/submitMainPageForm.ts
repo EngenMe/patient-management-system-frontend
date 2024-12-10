@@ -1,8 +1,13 @@
 import { MainPageFormData } from '@/interfaces/MainPageFormData.interface';
-import { usePatientStore } from '@/store/patientStore';
+import { usePatientStore } from '@/store/patient.store';
 import { useRouter } from 'next/navigation';
+import { Dispatch, SetStateAction } from 'react';
 
-export const submitForm = async (data: MainPageFormData, router: ReturnType<typeof useRouter>) => {
+export const submitForm = async (
+    data: MainPageFormData,
+    router: ReturnType<typeof useRouter>,
+    setOtpVisibility: Dispatch<SetStateAction<boolean>>
+) => {
     const setPatientData = usePatientStore.getState().setPatientData;
 
     try {
@@ -19,6 +24,8 @@ export const submitForm = async (data: MainPageFormData, router: ReturnType<type
         if (jsonResponse.status === 'new_patient') {
             setPatientData(data);
             router.push(jsonResponse.redirectTo);
+        } else if (jsonResponse.status === 'success') {
+            setOtpVisibility(true);
         } else {
             console.log('API Response:', jsonResponse);
         }
