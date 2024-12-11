@@ -16,6 +16,7 @@ import DatePicker from './NewPatient/DatePicker';
 import TimePicker from './NewAppointment/TimePicker';
 import { submitNewAppointmentForm } from '@/utils/submitNewAppointmentForm';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const currentDate = new Date();
 const minDate = currentDate;
@@ -27,6 +28,8 @@ const NewAppointmentForm = () => {
 
     const searchParams = useSearchParams();
     const patientId = searchParams.get('patientId');
+
+    const router = useRouter();
 
     useEffect(() => {
         fetchDoctors(setDoctors);
@@ -46,7 +49,7 @@ const NewAppointmentForm = () => {
 
     const onSubmit: SubmitHandler<NewAppointment> = async (data: NewAppointment) => {
         data.patientId = parseInt(patientId || '');
-        await submitNewAppointmentForm(data);
+        await submitNewAppointmentForm(data, router);
     };
 
     return (

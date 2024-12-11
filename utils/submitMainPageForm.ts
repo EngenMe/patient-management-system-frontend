@@ -23,7 +23,7 @@ export const submitForm = async (
 
         if (jsonResponse.status === 'new_patient') {
             setPatientData(data);
-            router.push(jsonResponse.redirectTo);
+            await router.push(jsonResponse.redirectTo);
         } else if (jsonResponse.status === 'success') {
             setOtpVisibility(true);
         } else {
