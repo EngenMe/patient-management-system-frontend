@@ -43,10 +43,8 @@ export const submitNewPatientForm = async (data: NewPatient) => {
 
         const jsonResponse = await response.json();
 
-        if (jsonResponse.status === 'new_patient') {
-            console.log('New patient successfully created:', jsonResponse);
-        } else {
-            console.log('Unexpected API Response:', jsonResponse);
+        if (jsonResponse.status !== 'new_patient') {
+            console.error('Unexpected API Response:', jsonResponse);
         }
     } catch (error) {
         console.error('Error submitting form:', error);

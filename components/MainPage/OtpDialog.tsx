@@ -57,7 +57,7 @@ export default function OtpDialog({ nOtpSlots, patientEmail }: Props) {
             return;
         }
 
-        const res = await submitOtp(patientId, data.pin, '/api/appointments/new', router);
+        const res = await submitOtp(patientId, data.pin, '/appointments/new', router);
 
         if (!res) {
             setIsInvalidOtp(true);

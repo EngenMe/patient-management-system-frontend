@@ -117,7 +117,7 @@ const NewPatientPageForm = () => {
                         type="tel"
                     />
                     {/* Date of Birth */}
-                    <DatePicker control={form.control} name="dateOfBirth" label="Date of Birth" />
+                    <DatePicker<NewPatient> control={form.control} name="dateOfBirth" label="Date of Birth" />
                     {/* Gender */}
                     <RadioGroupField control={form.control} name="gender" label="Gender" radioItems={genderItems} />
                     {/* Address */}
@@ -158,7 +158,7 @@ const NewPatientPageForm = () => {
                     <Header2>Medical Information</Header2>
                 </div>
                 {/* Primary Care Physician */}
-                <ComboBox
+                <ComboBox<NewPatient>
                     form={form}
                     name="primaryCarePhysician"
                     label="Primary Care Physician"
@@ -184,28 +184,28 @@ const NewPatientPageForm = () => {
                         icon={IdCard}
                     />
                     {/* Allergies */}
-                    <MultiLineTextInput
+                    <MultiLineTextInput<NewPatient>
                         control={form.control}
                         name="allergies"
                         label="Allergies (if any)"
                         placeholder="Peanuts, Penicillin, Pollen"
                     />
                     {/* Current Medications */}
-                    <MultiLineTextInput
+                    <MultiLineTextInput<NewPatient>
                         control={form.control}
                         name="currentMedications"
                         label="Current medications"
                         placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
                     />
                     {/* Family Medical History */}
-                    <MultiLineTextInput
+                    <MultiLineTextInput<NewPatient>
                         control={form.control}
                         name="familyMedicalHistory"
                         label="Family medical history (if relevant)"
                         placeholder="Mother had breast cancer"
                     />
                     {/* Past Medical History */}
-                    <MultiLineTextInput
+                    <MultiLineTextInput<NewPatient>
                         control={form.control}
                         name="pastMedicalHistory"
                         label="Past medical history"

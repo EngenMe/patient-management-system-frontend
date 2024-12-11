@@ -7,10 +7,7 @@ interface Props {
 
 const PrimaryButton = ({ children, type = 'button' }: Props) => {
     return (
-        <Button
-            type={type}
-            className="w-full h-12 rounded-[8px] py-2 px-6 gap-3 font-semibold text-base text-foreground"
-        >
+        <Button type={type} className="w-full h-12 rounded-[8px] py-2 px-6 gap-3 font-semibold text-foreground">
             {children}
         </Button>
     );

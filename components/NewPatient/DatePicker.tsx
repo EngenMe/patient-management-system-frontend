@@ -6,40 +6,34 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Control } from 'react-hook-form';
-import { NewPatient } from '@/interfaces/NewPatient.interface';
+import { Control, FieldValues, Path } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useState, useEffect } from 'react';
+import { months } from '@/public/months';
 
 const currentDate = new Date();
 const defaultMinDate = new Date(currentDate.getFullYear() - 100, currentDate.getMonth(), currentDate.getDate());
 const defaultMaxDate = currentDate;
 
-interface Props {
-    control: Control<NewPatient, unknown>;
-    name: keyof NewPatient;
+interface Props<T extends FieldValues> {
+    control: Control<T>;
+    name: Path<T>;
     label: string;
     minDate?: Date;
     maxDate?: Date;
 }
 
-const DatePicker = ({ control, name, label, minDate = defaultMinDate, maxDate = defaultMaxDate }: Props) => {
-    const months = [
-        { value: 0, label: 'January' },
-        { value: 1, label: 'February' },
-        { value: 2, label: 'March' },
-        { value: 3, label: 'April' },
-        { value: 4, label: 'May' },
-        { value: 5, label: 'June' },
-        { value: 6, label: 'July' },
-        { value: 7, label: 'August' },
-        { value: 8, label: 'September' },
-        { value: 9, label: 'October' },
-        { value: 10, label: 'November' },
-        { value: 11, label: 'December' },
-    ];
-
-    const years = Array.from({ length: 101 }, (_, i) => currentDate.getFullYear() - i);
+const DatePicker = <T extends FieldValues>({
+    control,
+    name,
+    label,
+    minDate = defaultMinDate,
+    maxDate = defaultMaxDate,
+}: Props<T>) => {
+    const years = Array.from(
+        { length: maxDate.getFullYear() - minDate.getFullYear() + 1 },
+        (_, i) => minDate.getFullYear() + i
+    );
 
     return (
         <FormField

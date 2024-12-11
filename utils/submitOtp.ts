@@ -18,7 +18,8 @@ export const submitOtp = async (
         const data = await response.json();
 
         if (response.ok && data.success) {
-            router.push(redirectTo);
+            const redirectUrl = `${redirectTo}?patientId=${encodeURIComponent(patientId)}`;
+            router.push(redirectUrl);
             return true;
         } else {
             return false;

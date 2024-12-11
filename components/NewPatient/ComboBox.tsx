@@ -1,5 +1,4 @@
-import { NewPatient } from '@/interfaces/NewPatient.interface';
-import { UseFormReturn } from 'react-hook-form';
+import { FieldValues, Path, PathValue, UseFormReturn } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
@@ -9,16 +8,16 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { ComboBoxItem } from '@/interfaces/ComboBoxItem.interface';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
-interface Props {
-    form: UseFormReturn<NewPatient, unknown>;
-    name: keyof NewPatient;
+interface Props<T extends FieldValues> {
+    form: UseFormReturn<T>;
+    name: Path<T>;
     label: string;
     data: ComboBoxItem[];
     placeholder: string;
     searchPlaceholder: string;
 }
 
-const ComboBox = ({ form, name, label, data, placeholder, searchPlaceholder }: Props) => {
+const ComboBox = <T extends FieldValues>({ form, name, label, data, placeholder, searchPlaceholder }: Props<T>) => {
     return (
         <FormField
             control={form.control}
@@ -44,11 +43,12 @@ const ComboBox = ({ form, name, label, data, placeholder, searchPlaceholder }: P
                                                       <Avatar className="w-6 h-6">
                                                           <AvatarImage
                                                               src={
-                                                                  data.find((item) => item.value === field.value)
-                                                                      ?.picturePath
+                                                                  data
+                                                                      .find((item) => item.value === field.value)
+                                                                      ?.picturePath?.toString() ?? ''
                                                               }
                                                               alt={
-                                                                  data.find((item) => item.value === field.value)?.value
+                                                                  data.find((item) => item.value === field.value)?.label
                                                               }
                                                           />
                                                           <AvatarFallback>CN</AvatarFallback>
@@ -73,7 +73,7 @@ const ComboBox = ({ form, name, label, data, placeholder, searchPlaceholder }: P
                                                 value={item.label}
                                                 key={item.value}
                                                 onSelect={() => {
-                                                    form.setValue(name, item.value);
+                                                    form.setValue(name, item.value as PathValue<T, Path<T>>);
                                                 }}
                                                 className={cn(
                                                     field.value === item.value &&
@@ -83,7 +83,10 @@ const ComboBox = ({ form, name, label, data, placeholder, searchPlaceholder }: P
                                             >
                                                 {item.picturePath && (
                                                     <Avatar className="w-8 h-8">
-                                                        <AvatarImage src={item.picturePath} alt={item.label} />
+                                                        <AvatarImage
+                                                            src={item.picturePath.toString()}
+                                                            alt={item.label}
+                                                        />
                                                         <AvatarFallback></AvatarFallback>
                                                     </Avatar>
                                                 )}
