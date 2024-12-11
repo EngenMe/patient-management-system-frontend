@@ -1,4 +1,5 @@
 import { NewAppointment } from '@/interfaces/NewAppointment.interface';
+import { useSuccessPageStore } from '@/store/successPage.store';
 import { useRouter } from 'next/navigation';
 
 export const submitNewAppointmentForm = async (data: NewAppointment, router: ReturnType<typeof useRouter>) => {
@@ -15,6 +16,13 @@ export const submitNewAppointmentForm = async (data: NewAppointment, router: Ret
             const errorData = await response.json();
             throw new Error(errorData.message || 'Failed to create appointment');
         }
+
+        const { doctor, expectedAppointmentDate, expectedAppointmentTime } = data;
+        useSuccessPageStore.getState().setSuccessData({
+            doctorName: doctor,
+            expectedAppointmentDate: new Date(expectedAppointmentDate).toISOString(),
+            expectedAppointmentTime,
+        });
 
         await response.json();
         await router.push('/success');

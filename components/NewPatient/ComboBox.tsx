@@ -7,6 +7,7 @@ import { Check, ChevronDown } from 'lucide-react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command';
 import { ComboBoxItem } from '@/interfaces/ComboBoxItem.interface';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import Badge from './Badge';
 
 interface Props<T extends FieldValues> {
     form: UseFormReturn<T>;
@@ -38,24 +39,14 @@ const ComboBox = <T extends FieldValues>({ form, name, label, data, placeholder,
                                 >
                                     {field.value
                                         ? data.find((item) => item.value === field.value) && (
-                                              <div className="flex items-center w-auto h-8 rounded-[5px] border p-3 gap-[6px] font-semibold text-xs leading-[18px] text-foreground bg-gradient-to-r from-[#D7EDED29] to-[#CCEBEB00]">
-                                                  {data.find((item) => item.value === field.value)?.picturePath && (
-                                                      <Avatar className="w-6 h-6">
-                                                          <AvatarImage
-                                                              src={
-                                                                  data
-                                                                      .find((item) => item.value === field.value)
-                                                                      ?.picturePath?.toString() ?? ''
-                                                              }
-                                                              alt={
-                                                                  data.find((item) => item.value === field.value)?.label
-                                                              }
-                                                          />
-                                                          <AvatarFallback>CN</AvatarFallback>
-                                                      </Avatar>
-                                                  )}
-                                                  {data.find((item) => item.value === field.value)?.label}
-                                              </div>
+                                              <Badge
+                                                  picturePath={
+                                                      data
+                                                          .find((item) => item.value === field.value)
+                                                          ?.picturePath?.toString() ?? ''
+                                                  }
+                                                  label={data.find((item) => item.value === field.value)?.label ?? ''}
+                                              />
                                           )
                                         : placeholder}
                                     <ChevronDown className="text-[#B6F09C]" />
