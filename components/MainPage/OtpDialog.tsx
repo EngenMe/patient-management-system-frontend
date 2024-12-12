@@ -31,10 +31,11 @@ const FormSchema = z.object({
 
 interface Props {
     nOtpSlots: number;
-    patientEmail: string;
+    patientEmail?: string;
+    adminEmail?: string;
 }
 
-export default function OtpDialog({ nOtpSlots, patientEmail }: Props) {
+export default function OtpDialog({ nOtpSlots, patientEmail, adminEmail }: Props) {
     const [isOpen, setIsOpen] = useState(true);
 
     const [isInvalidOtp, setIsInvalidOtp] = useState(false);
@@ -49,15 +50,29 @@ export default function OtpDialog({ nOtpSlots, patientEmail }: Props) {
     });
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        const patientId = await getPatientIdByEmail(patientEmail);
+        let res = null;
 
-        if (!patientId) {
-            setIsInvalidOtp(true);
-            console.error('Error: Patient ID not found.');
-            return;
+        if (patientEmail) {
+            const patientId = await getPatientIdByEmail(patientEmail);
+
+            if (!patientId) {
+                setIsInvalidOtp(true);
+                console.error('Error: Patient ID not found.');
+                return;
+            }
+
+            res = await submitOtp(patientId, data.pin, '/appointments/new', router);
+        } else if (adminEmail) {
+            const adminId = await getPatientIdByEmail(adminEmail);
+
+            if (!adminId) {
+                setIsInvalidOtp(true);
+                console.error('Error: Admin ID not found.');
+                return;
+            }
+
+            res = await submitOtp(adminId, data.pin, '/admin/appointments', router);
         }
-
-        const res = await submitOtp(patientId, data.pin, '/appointments/new', router);
 
         if (!res) {
             setIsInvalidOtp(true);

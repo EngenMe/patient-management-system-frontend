@@ -3,7 +3,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PrimaryButton from './MainPage/PrimaryButton';
-import { submitForm } from '@/utils/submitMainPageForm';
+import { submitMainPageForm } from '@/utils/submitMainPageForm';
 import { useRouter } from 'next/navigation';
 import { MainPageFormData } from '@/interfaces/MainPageFormData.interface';
 import TextInput from './NewPatient/TextInput';
@@ -32,7 +32,7 @@ const MainPageForm = ({ setOtpVisibility, setPatientEmail }: Props) => {
 
     const onSubmit: SubmitHandler<MainPageFormData> = async (data: MainPageFormData) => {
         setPatientEmail(data.email);
-        await submitForm(data, router, setOtpVisibility);
+        await submitMainPageForm(data, router, setOtpVisibility);
     };
 
     return (
@@ -62,6 +62,7 @@ const MainPageForm = ({ setOtpVisibility, setPatientEmail }: Props) => {
                     placeholder="089 765 4321"
                     icon={Phone}
                 />
+                {/* Submit */}
                 <div className="pt-10">
                     <PrimaryButton type="submit">Get Started</PrimaryButton>
                 </div>

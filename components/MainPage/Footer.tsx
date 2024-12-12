@@ -5,13 +5,14 @@ interface Props {
     children: string;
     href?: string;
     isPulse?: boolean;
+    isTargetBlank?: boolean;
 }
 
-const Footer = ({ children, href = '', isPulse = false }: Props) => {
+const Footer = ({ children, href = '', isPulse = false, isTargetBlank = true }: Props) => {
     return (
         <h2 className={cn(isPulse && 'animate-pulse', 'font-normal size-4 leading-6 text-accent-foreground w-auto')}>
             {href ? (
-                <Link href={href} target="_blank">
+                <Link href={href} target={isTargetBlank ? '_blank' : ''}>
                     {children}
                 </Link>
             ) : (

@@ -12,6 +12,8 @@ interface Props<T extends FieldValues> {
     placeholder: string;
     icon?: LucideIcon;
     type?: HTMLInputTypeAttribute;
+    isWrongField?: boolean;
+    invalidInputFieldMessage?: string;
 }
 
 const TextInput = <T extends FieldValues>({
@@ -21,6 +23,8 @@ const TextInput = <T extends FieldValues>({
     placeholder,
     icon: Icon,
     type = 'text',
+    isWrongField = false,
+    invalidInputFieldMessage = 'Invalid input fields',
 }: Props<T>) => {
     return (
         <FormField
@@ -46,12 +50,14 @@ const TextInput = <T extends FieldValues>({
                                     field.onChange(newValue);
                                 }}
                                 className={cn(
-                                    'flex h-12 w-full rounded-[8px] border border-border bg-input px-4 text-base text-foreground placeholder:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-                                    Icon && 'pl-11'
+                                    'flex h-12 w-full rounded-[8px] border  bg-input px-4 text-base text-foreground placeholder:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+                                    Icon && 'pl-11',
+                                    isWrongField ? 'border-destructive' : 'border-border'
                                 )}
                             />
                         </div>
                     </FormControl>
+                    {isWrongField && <FormMessage>{invalidInputFieldMessage}</FormMessage>}
                     <FormMessage />
                 </FormItem>
             )}

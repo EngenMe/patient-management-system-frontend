@@ -3,7 +3,7 @@ import { usePatientStore } from '@/store/patient.store';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 
-export const submitForm = async (
+export const submitMainPageForm = async (
     data: MainPageFormData,
     router: ReturnType<typeof useRouter>,
     setOtpVisibility: Dispatch<SetStateAction<boolean>>
