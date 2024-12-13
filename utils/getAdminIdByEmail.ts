@@ -1,4 +1,4 @@
-export const getAdminByEmail = async (adminEmail: string): Promise<string | undefined> => {
+export const getAdminIdByEmail = async (adminEmail: string): Promise<string | undefined> => {
     try {
         const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/admins/id?email=${encodeURIComponent(adminEmail)}`

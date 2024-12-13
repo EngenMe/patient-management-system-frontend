@@ -13,7 +13,6 @@ interface SuccessPageStore {
     clearSuccessData: () => void;
 }
 
-// Custom localStorage wrapper
 const customStorage = {
     getItem: (name: string) => {
         const value = localStorage.getItem(name);

@@ -1,6 +1,8 @@
 import { AdminLogin } from '@/interfaces/AdminLogin.interface';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
+import useAdminStore from '@/store/admin.store';
+import { getAdminByEmail } from './getAdminByEmail';
 
 export const submitAdminPageForm = async (
     data: AdminLogin,
@@ -17,6 +19,16 @@ export const submitAdminPageForm = async (
         });
 
         if (response.ok) {
+            const admin = await getAdminByEmail(data.email);
+
+            console.log(admin?.id, admin?.fullName, admin?.picturePath);
+
+            useAdminStore.getState().setAdmin({
+                id: admin!.id,
+                fullName: admin!.fullName,
+                picturePath: admin!.picturePath,
+            });
+
             router.push('/admin/dashboard');
         } else {
             setIsWrongPassword(true);
