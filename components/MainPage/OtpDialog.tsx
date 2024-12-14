@@ -77,12 +77,12 @@ export default function OtpDialog({ nOtpSlots, patientEmail, adminEmail }: Props
         if (!res) {
             setIsInvalidOtp(true);
         }
-    }
+    } //"pt-10 pb-[50px] px-10 gap-10 opacity-95 border-0 max-w-[640px] w-full bg-[#1A1D21F5]"
 
     return (
         <AlertDialog open={isOpen}>
             <AlertDialogContent
-                className="pt-10 pb-[50px] px-10 gap-10 opacity-95 border-0 max-w-[640px] w-full bg-[#1A1D21F5]"
+                className="pt-10 pb-[50px] gap-10 opacity-95 border-0 lg:max-w-[640px] bg-[#1A1D21F5] scale-50 flex flex-col px-4 w-[520px] lg:scale-100"
                 style={{ borderRadius: '16px' }}
             >
                 <AlertDialogHeader>

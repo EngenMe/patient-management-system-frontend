@@ -28,7 +28,7 @@ const SucessPage = () => {
     });
 
     return (
-        <div className="pt-[60px] flex flex-col items-center">
+        <div className="lg:pt-[60px] flex flex-col items-center scale-75 lg:scale-100">
             <Logo />
             <div className="pt-40 flex justify-center items-center">
                 <CircleCheck
@@ -51,20 +51,20 @@ const SucessPage = () => {
                 We&apos;ll be in touch shortly to confirm.
             </p>
             <hr className="w-[944px] border border-[#363A3D99]" />
-            <div className="py-8 flex gap-[30px] items-center justify-center text-muted-foreground font-medium text-lg">
+            <div className="py-8 flex gap-[30px] items-center justify-center text-muted-foreground font-medium text-lg flex-col lg:flex-row">
                 <div>Requested appointment details:</div>
                 <Badge
                     picturePath={doctor?.imageUrl?.toString() || undefined}
                     label={doctor?.name || 'Unknown Doctor'}
                 />
-                <div className="flex items-center justify-center gap-[7px] font-medium text-lg">
+                <div className="flex items-center justify-center gap-[7px] font-medium">
                     <CalendarIcon />
                     <div>
                         {day} {monthName} {year} - {expectedAppointmentTime}
                     </div>
                 </div>
             </div>
-            <hr className="w-[944px] border-[#363A3D99]" />
+            <hr className="w-[944px] border-[#363A3D99] pb-10" />
         </div>
     );
 };

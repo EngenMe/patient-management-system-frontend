@@ -21,9 +21,6 @@ export const handleScheduleClick = async (
         });
 
         if (response.ok) {
-            const data = await response.json();
-            console.log('Appointment updated successfully:', data);
-
             await fetchAppointments(page, setAppointments, setTotalPages);
             await fetchAppointmentsCount(setCounts);
         } else {

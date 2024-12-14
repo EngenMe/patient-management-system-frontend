@@ -21,8 +21,6 @@ export const submitAdminPageForm = async (
         if (response.ok) {
             const admin = await getAdminByEmail(data.email);
 
-            console.log(admin?.id, admin?.fullName, admin?.picturePath);
-
             useAdminStore.getState().setAdmin({
                 id: admin!.id,
                 fullName: admin!.fullName,

@@ -38,16 +38,16 @@ const DashboardPage = () => {
 
     return (
         <div className="flex flex-col gap-[42px] pb-10">
-            <div className="flex justify-between px-14 py-6 bg-[#0D0F10] m-2 rounded-[20px]">
+            <div className="flex justify-between py-6 bg-[#0D0F10] m-2 rounded-[20px] px-4 lg:px-14">
                 <Logo />
                 <AdminIcon picturePath={picturePath} adminName={fullName || 'Admin'} />
             </div>
-            <div className="flex flex-col px-[68px] gap-[42px]">
+            <div className="flex flex-col px-4 text-center lg:text-start lg:px-[68px] gap-[42px]">
                 <div className="flex flex-col gap-3">
                     <Header1>Welcome, {fullName || 'Admin'}</Header1>
                     <Paragraph1>Start day with managing new appointments</Paragraph1>
                 </div>
-                <div className="grid grid-cols-3 gap-10">
+                <div className="grid lg:grid-cols-3 gap-10">
                     <AppointmentsCountCard
                         icon={CalendarCheck2}
                         total={counts.scheduled}

@@ -21,9 +21,6 @@ export const handleCancelClick = async (
         });
 
         if (response.ok) {
-            const data = await response.json();
-            console.log('Appointment cancelled successfully:', data);
-
             await fetchAppointments(page, setAppointments, setTotalPages);
             await fetchAppointmentsCount(setCounts);
         } else {
