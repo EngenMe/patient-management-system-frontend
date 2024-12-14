@@ -3,6 +3,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { Plus_Jakarta_Sans } from '@next/font/google';
 import { Toaster } from '@/components/ui/toaster';
+import BreadCrumb from '@/components/BreadCrumb';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
     weight: ['400', '500', '600', '700'],
@@ -22,6 +23,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <body className={plusJakartaSans.className}>
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+                    <BreadCrumb />
                     {children}
                 </ThemeProvider>
                 <Toaster />

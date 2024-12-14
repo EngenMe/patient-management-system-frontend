@@ -1,5 +1,7 @@
+import { ReactNode } from 'react';
+
 interface Props {
-    children: string;
+    children: ReactNode;
 }
 
 const Paragraph1 = ({ children }: Props) => {
