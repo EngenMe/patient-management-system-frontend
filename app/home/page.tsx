@@ -12,7 +12,7 @@ import OtpDialog from "@/components/MainPage/OtpDialog";
 const nOtpSlots = 6;
 
 const HomePage = () => {
-  const [otpVisibility, setOtpVisibility] = useState(true);
+  const [otpVisibility, setOtpVisibility] = useState(false);
   const [patientEmail, setPatientEmail] = useState("");
 
   return (
