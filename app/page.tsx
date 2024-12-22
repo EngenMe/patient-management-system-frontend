@@ -94,7 +94,7 @@ const MainPage = () => {
       </Link>
       {/* Back End */}
       <Header2>Back-End</Header2>
-      <div className="grid grid-cols-2">
+      <div className="grid lg:grid-cols-2">
         {/* Node Js */}
         <Link href="https://nodejs.org/en" target="_blank">
           <Card
@@ -153,7 +153,7 @@ const MainPage = () => {
       </div>
       {/* Database & ORM */}
       <Header2>Database & ORM:</Header2>
-      <div className="grid grid-cols-2">
+      <div className="grid lg:grid-cols-2">
         {/* PostgreSQL */}
         <Link href="https://www.postgresql.org/" target="_blank">
           <Card
@@ -212,7 +212,7 @@ const MainPage = () => {
       </div>
       {/* Cloud Services & Integrations */}
       <Header2>Cloud Services & Integrations:</Header2>
-      <div className="grid grid-cols-2">
+      <div className="grid lg:grid-cols-2">
         {/* S3 */}
         <Link href="https://aws.amazon.com/s3/" target="_blank">
           <Card
@@ -272,7 +272,7 @@ const MainPage = () => {
           </Card>
         </Link>
       </div>
-      <div className="grid grid-cols-2">
+      <div className="grid lg:grid-cols-2">
         {/* EC2 */}
         <Link href="https://aws.amazon.com/ec2/" target="_blank">
           <Card
@@ -331,7 +331,7 @@ const MainPage = () => {
       </div>
       {/* Other Libraries and Tools */}
       <Header2>Other Libraries and Tools</Header2>
-      <div className="grid grid-cols-3">
+      <div className="grid lg:grid-cols-3">
         {/* React */}
         <Link href="https://react.dev/" target="_blank">
           <Card
