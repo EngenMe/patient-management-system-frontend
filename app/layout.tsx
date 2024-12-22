@@ -7,6 +7,7 @@ import BreadCrumb from "@/components/BreadCrumb";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
